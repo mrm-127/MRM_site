@@ -1,26 +1,79 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/*
+  MRM Intelligence — Brand design system
+  Navy + Teal, inspired by the compass logo.
+*/
+@theme {
+  /* Brand palette */
+  --color-navy: #0e2a47;
+  --color-navy-deep: #07182b;
+  --color-navy-soft: #1c3d5e;
+  --color-teal: #16b8a6;
+  --color-teal-bright: #34d3be;
+  --color-teal-soft: #d6f5f0;
+
+  /* Neutrals */
+  --color-ink: #15212e;
+  --color-muted: #5a6b7b;
+  --color-line: #e3e9f0;
+  --color-surface: #f6f9fc;
+
+  /* Map semantic tokens */
+  --color-background: #ffffff;
+  --color-foreground: var(--color-ink);
+
+  /* Typography */
+  --font-sans: var(--font-vazir), system-ui, sans-serif;
+
+  /* Shape */
+  --radius-xl: 1.25rem;
+
+  /* Shadows */
+  --shadow-card: 0 1px 3px 0 rgb(14 42 71 / 0.06), 0 1px 2px -1px rgb(14 42 71 / 0.06);
+  --shadow-card-hover: 0 10px 25px -5px rgb(14 42 71 / 0.08), 0 4px 10px -6px rgb(14 42 71 / 0.06);
+  --shadow-teal: 0 4px 14px 0 rgb(22 184 166 / 0.35);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Persian numerals + comfortable line-height for RTL reading */
+* {
+  font-feature-settings: "ss01";
+}
+
+p {
+  line-height: 1.9;
+}
+
+/* Dot grid pattern for hero sections */
+.dot-grid {
+  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.12) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+/* Animated gradient border on card top */
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+/* Smooth pulse for live badge */
+@keyframes pulse-soft {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.pulse-soft {
+  animation: pulse-soft 2s ease-in-out infinite;
 }
