@@ -1,10 +1,6 @@
 import { NextResponse } from "next/server";
+import { supabase } from "@/lib/supabase";
 
-/**
- * دریافت درخواست مشاوره.
- * 🔧 فاز بعد: این درخواست در جدول `consultation_requests` در Supabase ذخیره می‌شود
- *    و یک ایمیل اطلاع‌رسانی (Resend) ارسال خواهد شد.
- */
 export async function POST(request: Request) {
   let body: Record<string, unknown>;
   try {
@@ -24,18 +20,18 @@ export async function POST(request: Request) {
     );
   }
 
-  const submission = {
+  const { error } = await supabase.from("consultation_requests").insert({
     name,
     email,
     phone,
     service: String(body.service ?? ""),
     message: String(body.message ?? ""),
-    createdAt: new Date().toISOString(),
-  };
+  });
 
-  // TODO(Supabase): await supabase.from("consultation_requests").insert(submission)
-  // TODO(Resend): notify mr.momeni@gmail.com
-  console.log("[consultation request]", submission);
+  if (error) {
+    console.error("[supabase insert error]", error);
+    return NextResponse.json({ error: "database error" }, { status: 500 });
+  }
 
   return NextResponse.json({ ok: true });
 }

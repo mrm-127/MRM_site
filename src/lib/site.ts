@@ -25,6 +25,7 @@ export const nav = [
   { label: "خانه", href: "/" },
   { label: "خدمات", href: "/services" },
   { label: "درباره من", href: "/about" },
+  { label: "دستیار هوشمند", href: "/chat" },
   { label: "تماس و رزرو", href: "/contact" },
 ] as const;
 

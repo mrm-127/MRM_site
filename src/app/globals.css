@@ -1,11 +1,11 @@
 @import "tailwindcss";
 
 /*
-  MRM Intelligence — Brand design system
-  Navy + Teal, inspired by the compass logo.
+  MRM Intelligence — Brand design system v2
+  Premium Navy + Teal, compass-inspired intelligence brand.
 */
 @theme {
-  /* Brand palette */
+  /* ─── Brand palette ─── */
   --color-navy: #0e2a47;
   --color-navy-deep: #07182b;
   --color-navy-soft: #1c3d5e;
@@ -13,26 +13,33 @@
   --color-teal-bright: #34d3be;
   --color-teal-soft: #d6f5f0;
 
-  /* Neutrals */
+  /* Gold — trust / premium signals */
+  --color-gold: #f59e0b;
+  --color-gold-soft: #fffbeb;
+
+  /* ─── Neutrals ─── */
   --color-ink: #15212e;
   --color-muted: #5a6b7b;
   --color-line: #e3e9f0;
   --color-surface: #f6f9fc;
 
-  /* Map semantic tokens */
+  /* ─── Semantic tokens ─── */
   --color-background: #ffffff;
   --color-foreground: var(--color-ink);
 
-  /* Typography */
+  /* ─── Typography ─── */
   --font-sans: var(--font-vazir), system-ui, sans-serif;
 
-  /* Shape */
+  /* ─── Shape ─── */
   --radius-xl: 1.25rem;
 
-  /* Shadows */
-  --shadow-card: 0 1px 3px 0 rgb(14 42 71 / 0.06), 0 1px 2px -1px rgb(14 42 71 / 0.06);
-  --shadow-card-hover: 0 10px 25px -5px rgb(14 42 71 / 0.08), 0 4px 10px -6px rgb(14 42 71 / 0.06);
-  --shadow-teal: 0 4px 14px 0 rgb(22 184 166 / 0.35);
+  /* ─── Shadows — layered for depth ─── */
+  --shadow-card:       0 1px 3px 0 rgb(14 42 71 / 0.06), 0 1px 2px -1px rgb(14 42 71 / 0.06);
+  --shadow-card-hover: 0 20px 40px -8px rgb(14 42 71 / 0.14), 0 8px 16px -8px rgb(14 42 71 / 0.08);
+  --shadow-teal:       0 4px 14px 0 rgb(22 184 166 / 0.35);
+  --shadow-teal-lg:    0 8px 30px 0 rgb(22 184 166 / 0.45);
+  --shadow-navy:       0 8px 30px 0 rgb(14 42 71 / 0.2);
+  --shadow-glow:       0 0 60px rgb(22 184 166 / 0.18);
 }
 
 html {
@@ -47,7 +54,7 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-/* Persian numerals + comfortable line-height for RTL reading */
+/* Persian numerals + comfortable RTL line-height */
 * {
   font-feature-settings: "ss01";
 }
@@ -56,24 +63,119 @@ p {
   line-height: 1.9;
 }
 
-/* Dot grid pattern for hero sections */
+/* ─────────────────────────────────────────
+   PATTERNS
+───────────────────────────────────────── */
+
+/* Fine dot grid — white on dark backgrounds */
 .dot-grid {
-  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.12) 1px, transparent 1px);
-  background-size: 28px 28px;
+  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+  background-size: 24px 24px;
 }
 
-/* Animated gradient border on card top */
+/* Dot grid — ink dots on light backgrounds */
+.dot-grid-light {
+  background-image: radial-gradient(circle, rgba(14, 42, 71, 0.05) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* ─────────────────────────────────────────
+   ANIMATIONS
+───────────────────────────────────────── */
+
+/* Sweep gradient for card top-accent line */
 @keyframes shimmer {
-  0% { background-position: -200% center; }
-  100% { background-position: 200% center; }
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
 }
 
-/* Smooth pulse for live badge */
+/* Subtle live-badge pulse */
 @keyframes pulse-soft {
   0%, 100% { opacity: 1; }
-  50% { opacity: 0.4; }
+  50%       { opacity: 0.3; }
 }
+
+/* Gentle float for decorative orbs / icons */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-10px); }
+}
+
+/* Entrance fade-in-up */
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Slow compass spin */
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* ─────────────────────────────────────────
+   UTILITY CLASSES
+───────────────────────────────────────── */
 
 .pulse-soft {
   animation: pulse-soft 2s ease-in-out infinite;
+}
+
+.float {
+  animation: float 7s ease-in-out infinite;
+}
+
+.fade-in-up {
+  animation: fade-in-up 0.65s ease-out both;
+}
+
+/* Gradient text — teal highlight for hero keywords */
+.gradient-text {
+  background: linear-gradient(135deg, var(--color-teal-bright) 0%, var(--color-teal) 60%, #a7f3d0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Animated gradient border sweep (used on card top accent) */
+.shimmer-border {
+  background: linear-gradient(90deg, var(--color-teal), var(--color-teal-bright), var(--color-teal));
+  background-size: 200%;
+  animation: shimmer 2.5s linear infinite;
+}
+
+/* Typing indicator bounce */
+@keyframes bounce {
+  0%, 80%, 100% { transform: translateY(0); }
+  40%            { transform: translateY(-6px); }
+}
+
+/* Robot eye blink */
+@keyframes eye-blink {
+  0%, 85%, 100% { transform: scaleY(1); }
+  92%            { transform: scaleY(0.06); }
+}
+
+/* Robot chest scan line */
+@keyframes scan-line {
+  0%   { transform: translateY(0px); opacity: 0; }
+  10%  { opacity: 0.6; }
+  90%  { opacity: 0.6; }
+  100% { transform: translateY(58px); opacity: 0; }
+}
+
+.robot-eye {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: eye-blink 4.5s ease-in-out infinite;
+}
+
+.robot-eye-delay {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: eye-blink 4.5s ease-in-out 0.25s infinite;
+}
+
+.robot-scan {
+  animation: scan-line 3s ease-in-out infinite;
 }
