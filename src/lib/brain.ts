@@ -100,12 +100,31 @@ async function executeTool(
   return "ابزار نامشخص";
 }
 
+const DAILY_LIMIT = 5;
+
+async function getDailyCount(sessionId: string): Promise<number> {
+  const todayStart = new Date();
+  todayStart.setHours(0, 0, 0, 0);
+  const { count } = await supabase
+    .from("chat_memories")
+    .select("*", { count: "exact", head: true })
+    .eq("session_id", sessionId)
+    .eq("role", "user")
+    .gte("created_at", todayStart.toISOString());
+  return count ?? 0;
+}
+
 export async function processMessage(opts: {
   message: string;
   sessionId: string;
   source: "web" | "telegram" | "widget";
 }): Promise<string> {
   const { message, sessionId, source } = opts;
+
+  const used = await getDailyCount(sessionId);
+  if (used >= DAILY_LIMIT) {
+    return `سهمیه روزانه شما (${DAILY_LIMIT} پیام) به پایان رسیده است. فردا می‌توانید مجدداً با ما صحبت کنید.\nبرای ارتباط فوری با کارشناسان ما تماس بگیرید.`;
+  }
 
   const history = shortTermMemory.get(sessionId);
 
