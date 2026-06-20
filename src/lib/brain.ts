@@ -103,15 +103,24 @@ async function executeTool(
 const DAILY_LIMIT = 5;
 
 async function getDailyCount(sessionId: string): Promise<number> {
-  const todayStart = new Date();
-  todayStart.setHours(0, 0, 0, 0);
-  const { count } = await supabase
-    .from("chat_memories")
-    .select("*", { count: "exact", head: true })
-    .eq("session_id", sessionId)
-    .eq("role", "user")
-    .gte("created_at", todayStart.toISOString());
-  return count ?? 0;
+  try {
+    const todayStart = new Date();
+    todayStart.setHours(0, 0, 0, 0);
+    const { count, error } = await supabase
+      .from("chat_memories")
+      .select("*", { count: "exact", head: true })
+      .eq("session_id", sessionId)
+      .eq("role", "user")
+      .gte("created_at", todayStart.toISOString());
+    if (error) {
+      console.error("[getDailyCount]", error.message);
+      return 0;
+    }
+    return count ?? 0;
+  } catch (err) {
+    console.error("[getDailyCount error]", err);
+    return 0;
+  }
 }
 
 export async function processMessage(opts: {
