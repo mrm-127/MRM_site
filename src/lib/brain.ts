@@ -146,13 +146,20 @@ export async function processMessage(opts: {
     { role: "user", content: message },
   ];
 
-  const first = await openai.chat.completions.create({
-    model: MODEL,
-    messages,
-    tools: TOOLS,
-    tool_choice: "auto",
-    max_tokens: 1024,
-  });
+  let first: OpenAI.Chat.ChatCompletion;
+  try {
+    first = await openai.chat.completions.create({
+      model: MODEL,
+      messages,
+      tools: TOOLS,
+      tool_choice: "auto",
+      max_tokens: 1024,
+    });
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err);
+    console.error("[brain] model error:", msg);
+    return "در حال حاضر دستیار هوشمند در دسترس نیست. لطفاً چند دقیقه دیگر تلاش کنید یا مستقیماً با ما تماس بگیرید.";
+  }
 
   const firstMsg = first.choices[0].message;
   let reply = "";
